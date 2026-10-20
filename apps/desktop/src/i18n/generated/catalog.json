@@ -131,7 +131,7 @@
         },
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 183,
+          "line": 184,
           "column": 82
         },
         {
@@ -372,7 +372,7 @@
       "refs": [
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 100,
+          "line": 101,
           "column": 38
         }
       ]
@@ -401,7 +401,7 @@
       "refs": [
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 279,
+          "line": 281,
           "column": 26
         }
       ]
@@ -781,7 +781,7 @@
       "refs": [
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 283,
+          "line": 285,
           "column": 131
         }
       ]
@@ -807,17 +807,17 @@
       "refs": [
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 70,
+          "line": 71,
           "column": 42
         },
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 188,
+          "line": 189,
           "column": 22
         },
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 215,
+          "line": 216,
           "column": 58
         }
       ]
@@ -916,7 +916,7 @@
       "refs": [
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 256,
+          "line": 258,
           "column": 43
         }
       ]
@@ -940,7 +940,7 @@
       "refs": [
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 125,
+          "line": 126,
           "column": 15
         }
       ]
@@ -964,7 +964,7 @@
       "refs": [
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 306,
+          "line": 308,
           "column": 24
         }
       ]
@@ -1071,6 +1071,18 @@
         }
       ]
     },
+    "2a29e2e2e37cd761": {
+      "source": "把模型配置（含 API Key）和插件凭证打包成一个文件。文件包含密钥，请妥善保存。",
+      "kind": "text",
+      "placeholders": [],
+      "refs": [
+        {
+          "file": "features/settings/MigrationSettingsCard.tsx",
+          "line": 66,
+          "column": 19
+        }
+      ]
+    },
     "2caeaec539e78898": {
       "source": "思考预算 Token",
       "kind": "text",
@@ -1141,6 +1153,11 @@
           "column": 21
         },
         {
+          "file": "features/settings/MigrationSettingsCard.tsx",
+          "line": 85,
+          "column": 20
+        },
+        {
           "file": "features/settings/PricingSettingsCard.tsx",
           "line": 90,
           "column": 64
@@ -1152,12 +1169,12 @@
         },
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 179,
+          "line": 180,
           "column": 81
         },
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 298,
+          "line": 300,
           "column": 22
         },
         {
@@ -1263,8 +1280,25 @@
       "refs": [
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 149,
+          "line": 150,
           "column": 15
+        }
+      ]
+    },
+    "2f58b6eddc087df1": {
+      "source": "导入中…",
+      "kind": "text",
+      "placeholders": [],
+      "refs": [
+        {
+          "file": "features/settings/MigrationSettingsCard.tsx",
+          "line": 76,
+          "column": 24
+        },
+        {
+          "file": "features/settings/MigrationSettingsCard.tsx",
+          "line": 86,
+          "column": 33
         }
       ]
     },
@@ -1413,7 +1447,7 @@
         },
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 241,
+          "line": 243,
           "column": 27
         }
       ]
@@ -1486,7 +1520,7 @@
       "refs": [
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 308,
+          "line": 310,
           "column": 42
         }
       ]
@@ -1551,7 +1585,7 @@
       "refs": [
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 290,
+          "line": 292,
           "column": 14
         }
       ]
@@ -1580,7 +1614,7 @@
       "refs": [
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 241,
+          "line": 243,
           "column": 39
         }
       ]
@@ -1647,12 +1681,12 @@
       "refs": [
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 248,
+          "line": 250,
           "column": 22
         },
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 254,
+          "line": 256,
           "column": 26
         }
       ]
@@ -1734,7 +1768,7 @@
       "refs": [
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 156,
+          "line": 157,
           "column": 66
         }
       ]
@@ -1746,7 +1780,7 @@
       "refs": [
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 274,
+          "line": 276,
           "column": 52
         }
       ]
@@ -1765,6 +1799,18 @@
           "file": "features/home/charts/DailyTokenUsageChart.tsx",
           "line": 146,
           "column": 15
+        }
+      ]
+    },
+    "429ea3af443dd80b": {
+      "source": "导出配置",
+      "kind": "text",
+      "placeholders": [],
+      "refs": [
+        {
+          "file": "features/settings/MigrationSettingsCard.tsx",
+          "line": 65,
+          "column": 20
         }
       ]
     },
@@ -2196,7 +2242,7 @@
       "refs": [
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 177,
+          "line": 178,
           "column": 26
         }
       ]
@@ -2318,8 +2364,18 @@
       "placeholders": [],
       "refs": [
         {
+          "file": "features/settings/MigrationSettingsCard.tsx",
+          "line": 76,
+          "column": 36
+        },
+        {
+          "file": "features/settings/MigrationSettingsCard.tsx",
+          "line": 86,
+          "column": 45
+        },
+        {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 234,
+          "line": 236,
           "column": 78
         }
       ]
@@ -2365,7 +2421,7 @@
       "refs": [
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 238,
+          "line": 240,
           "column": 21
         }
       ]
@@ -2566,6 +2622,18 @@
         }
       ]
     },
+    "613278f1a398e7f3": {
+      "source": "已开始导出，请选择保存位置",
+      "kind": "text",
+      "placeholders": [],
+      "refs": [
+        {
+          "file": "features/settings/MigrationSettingsCard.tsx",
+          "line": 28,
+          "column": 13
+        }
+      ]
+    },
     "61a4c7bac12dc125": {
       "source": "异常调用：{count}",
       "kind": "template",
@@ -2678,7 +2746,7 @@
       "refs": [
         {
           "file": "shared/api.ts",
-          "line": 532,
+          "line": 551,
           "column": 43
         }
       ]
@@ -2781,6 +2849,18 @@
         }
       ]
     },
+    "67b5ca9b62f36c21": {
+      "source": "这不是 cursor-byok 的迁移文件",
+      "kind": "text",
+      "placeholders": [],
+      "refs": [
+        {
+          "file": "features/settings/MigrationSettingsCard.tsx",
+          "line": 38,
+          "column": 17
+        }
+      ]
+    },
     "680680288a6d2ad2": {
       "source": "在 Dock 栏显示",
       "kind": "text",
@@ -2805,7 +2885,7 @@
       "refs": [
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 100,
+          "line": 101,
           "column": 55
         }
       ]
@@ -2831,6 +2911,18 @@
           "file": "shell/AppLayout.tsx",
           "line": 80,
           "column": 47
+        }
+      ]
+    },
+    "6a7e935768008698": {
+      "source": "文件里没有可导入的内容",
+      "kind": "text",
+      "placeholders": [],
+      "refs": [
+        {
+          "file": "features/settings/MigrationSettingsCard.tsx",
+          "line": 96,
+          "column": 45
         }
       ]
     },
@@ -2933,6 +3025,18 @@
         }
       ]
     },
+    "70209b5621592caf": {
+      "source": "在另一台设备上恢复模型与插件凭证。已有配置不会被覆盖，只补充缺失的部分。",
+      "kind": "text",
+      "placeholders": [],
+      "refs": [
+        {
+          "file": "features/settings/MigrationSettingsCard.tsx",
+          "line": 73,
+          "column": 19
+        }
+      ]
+    },
     "72644ec4389da2f7": {
       "source": "默认平铺",
       "kind": "text",
@@ -2969,8 +3073,20 @@
       "refs": [
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 167,
+          "line": 168,
           "column": 16
+        }
+      ]
+    },
+    "76420433f22d1c80": {
+      "source": "导出",
+      "kind": "text",
+      "placeholders": [],
+      "refs": [
+        {
+          "file": "features/settings/MigrationSettingsCard.tsx",
+          "line": 68,
+          "column": 59
         }
       ]
     },
@@ -2993,7 +3109,7 @@
       "refs": [
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 266,
+          "line": 268,
           "column": 26
         }
       ]
@@ -3017,7 +3133,7 @@
       "refs": [
         {
           "file": "shared/api.ts",
-          "line": 527,
+          "line": 546,
           "column": 43
         }
       ]
@@ -3041,7 +3157,7 @@
       "refs": [
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 299,
+          "line": 301,
           "column": 23
         }
       ]
@@ -3087,6 +3203,18 @@
         }
       ]
     },
+    "7d0acfbe540b98ac": {
+      "source": "设备迁移",
+      "kind": "text",
+      "placeholders": [],
+      "refs": [
+        {
+          "file": "features/settings/MigrationSettingsCard.tsx",
+          "line": 61,
+          "column": 29
+        }
+      ]
+    },
     "7d9f043f8f7ab45c": {
       "source": "发现新版本 {version}，可在设置中安装",
       "kind": "template",
@@ -3108,7 +3236,7 @@
       "refs": [
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 143,
+          "line": 144,
           "column": 83
         }
       ]
@@ -3195,7 +3323,7 @@
       "refs": [
         {
           "file": "shared/api.ts",
-          "line": 461,
+          "line": 478,
           "column": 21
         }
       ]
@@ -3452,7 +3580,7 @@
       "refs": [
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 237,
+          "line": 239,
           "column": 22
         }
       ]
@@ -3579,7 +3707,7 @@
       "refs": [
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 159,
+          "line": 160,
           "column": 7
         }
       ]
@@ -3915,7 +4043,7 @@
       "refs": [
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 245,
+          "line": 247,
           "column": 26
         }
       ]
@@ -3951,7 +4079,7 @@
       "refs": [
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 63,
+          "line": 64,
           "column": 34
         }
       ]
@@ -4065,7 +4193,7 @@
         },
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 180,
+          "line": 181,
           "column": 133
         },
         {
@@ -4517,6 +4645,18 @@
         }
       ]
     },
+    "b48b6518293a604e": {
+      "source": "导入配置",
+      "kind": "text",
+      "placeholders": [],
+      "refs": [
+        {
+          "file": "features/settings/MigrationSettingsCard.tsx",
+          "line": 72,
+          "column": 20
+        }
+      ]
+    },
     "b4c9e08870d41aa2": {
       "source": "需要先初始化插件运行时",
       "kind": "text",
@@ -4589,7 +4729,7 @@
       "refs": [
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 156,
+          "line": 157,
           "column": 45
         }
       ]
@@ -4615,7 +4755,7 @@
       "refs": [
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 282,
+          "line": 284,
           "column": 22
         }
       ]
@@ -4773,7 +4913,7 @@
       "refs": [
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 283,
+          "line": 285,
           "column": 31
         }
       ]
@@ -4785,7 +4925,7 @@
       "refs": [
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 274,
+          "line": 276,
           "column": 40
         }
       ]
@@ -4869,6 +5009,18 @@
         }
       ]
     },
+    "c19d4b2bd8f39f22": {
+      "source": "迁移文件无法读取，可能已损坏",
+      "kind": "text",
+      "placeholders": [],
+      "refs": [
+        {
+          "file": "features/settings/MigrationSettingsCard.tsx",
+          "line": 43,
+          "column": 15
+        }
+      ]
+    },
     "c1e98892a77f7a19": {
       "source": "{count} 条/页",
       "kind": "template",
@@ -4897,6 +5049,22 @@
           "file": "features/calls/CallDetails.tsx",
           "line": 58,
           "column": 51
+        }
+      ]
+    },
+    "c3fe55474393d3d1": {
+      "source": "导入完成：新增 {added} 个模型（共 {total} 个），插件凭证新增 {resources} 条",
+      "kind": "template",
+      "placeholders": [
+        "added",
+        "total",
+        "resources"
+      ],
+      "refs": [
+        {
+          "file": "features/settings/MigrationSettingsCard.tsx",
+          "line": 104,
+          "column": 18
         }
       ]
     },
@@ -5071,12 +5239,12 @@
       "refs": [
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 165,
+          "line": 166,
           "column": 22
         },
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 171,
+          "line": 172,
           "column": 20
         }
       ]
@@ -5088,8 +5256,23 @@
       "refs": [
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 202,
+          "line": 203,
           "column": 21
+        }
+      ]
+    },
+    "d08da8e6668f2a09": {
+      "source": "将导入 {models} 个模型和 {resources} 组插件凭证。已有配置保持不变。",
+      "kind": "template",
+      "placeholders": [
+        "models",
+        "resources"
+      ],
+      "refs": [
+        {
+          "file": "features/settings/MigrationSettingsCard.tsx",
+          "line": 91,
+          "column": 16
         }
       ]
     },
@@ -5124,7 +5307,7 @@
       "refs": [
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 158,
+          "line": 159,
           "column": 7
         }
       ]
@@ -5492,7 +5675,7 @@
         },
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 318,
+          "line": 320,
           "column": 30
         },
         {
@@ -5756,7 +5939,7 @@
       "refs": [
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 76,
+          "line": 77,
           "column": 17
         }
       ]
@@ -5850,7 +6033,7 @@
       "refs": [
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 162,
+          "line": 163,
           "column": 26
         }
       ]
@@ -5934,6 +6117,18 @@
         }
       ]
     },
+    "ed42e5cb8bcb573f": {
+      "source": "导入迁移文件",
+      "kind": "text",
+      "placeholders": [],
+      "refs": [
+        {
+          "file": "features/settings/MigrationSettingsCard.tsx",
+          "line": 84,
+          "column": 14
+        }
+      ]
+    },
     "edc70de18c6da1a6": {
       "source": "安装本地 CA",
       "kind": "text",
@@ -5965,7 +6160,7 @@
       "refs": [
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 221,
+          "line": 222,
           "column": 16
         }
       ]
@@ -6126,7 +6321,7 @@
       "refs": [
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 249,
+          "line": 251,
           "column": 21
         }
       ]
@@ -6212,7 +6407,7 @@
       "refs": [
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 189,
+          "line": 190,
           "column": 21
         }
       ]
@@ -6410,7 +6605,7 @@
       "refs": [
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 309,
+          "line": 311,
           "column": 38
         }
       ]
@@ -6442,7 +6637,7 @@
         },
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 180,
+          "line": 181,
           "column": 121
         },
         {
@@ -6471,17 +6666,17 @@
       "refs": [
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 71,
+          "line": 72,
           "column": 46
         },
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 201,
+          "line": 202,
           "column": 22
         },
         {
           "file": "features/settings/SettingsPage.tsx",
-          "line": 216,
+          "line": 217,
           "column": 58
         }
       ]
