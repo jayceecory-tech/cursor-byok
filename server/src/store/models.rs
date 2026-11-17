@@ -64,6 +64,16 @@ impl Store {
         let _write = self.writes.lock().await;
         let mut transaction = self.pool.begin().await?;
         for (hash, input) in &normalized {
+            let existing = sqlx::query("SELECT 1 FROM model_configs WHERE model_hash = ?")
+                .bind(hash)
+                .fetch_optional(&mut *transaction)
+                .await?;
+            if existing.is_some() {
+                return Err(Error::Config(format!(
+                    "model \"{}\" already exists",
+                    input.display_name
+                )));
+            }
             insert_model(&mut transaction, hash, input, now).await?;
         }
         transaction.commit().await?;
