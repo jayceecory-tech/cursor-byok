@@ -85,8 +85,8 @@ export const appStore = {
 
   async refresh() {
     update({ busy: true, error: null });
-    try {
-      const [models, calls, overview, settings, ports, pricing, cursorHarness, pluginRuntime, plugins] = await Promise.all([
+    const [models, calls, overview, settings, ports, pricing, cursorHarness, pluginRuntime, plugins] =
+      await Promise.allSettled([
         api.models(),
         api.calls(),
         api.overview(),
@@ -97,12 +97,23 @@ export const appStore = {
         api.pluginRuntime(),
         api.plugins(),
       ]);
-      update({ models, calls, overview, detailed: settings.detailed, ports, pricing, cursorHarness, pluginRuntime, plugins });
-    } catch (cause) {
-      update({ error: cause instanceof Error ? cause.message : String(cause) });
-    } finally {
-      update({ busy: false });
+    const results = [models, calls, overview, settings, ports, pricing, cursorHarness, pluginRuntime, plugins];
+    const patch: Partial<AppSnapshot> = { busy: false };
+    if (models.status === "fulfilled") patch.models = models.value;
+    if (calls.status === "fulfilled") patch.calls = calls.value;
+    if (overview.status === "fulfilled") patch.overview = overview.value;
+    if (settings.status === "fulfilled") patch.detailed = settings.value.detailed;
+    if (ports.status === "fulfilled") patch.ports = ports.value;
+    if (pricing.status === "fulfilled") patch.pricing = pricing.value;
+    if (cursorHarness.status === "fulfilled") patch.cursorHarness = cursorHarness.value;
+    if (pluginRuntime.status === "fulfilled") patch.pluginRuntime = pluginRuntime.value;
+    if (plugins.status === "fulfilled") patch.plugins = plugins.value;
+    const rejected = results.find((result) => result.status === "rejected");
+    if (rejected && rejected.status === "rejected") {
+      const reason = rejected.reason;
+      patch.error = reason instanceof Error ? reason.message : String(reason);
     }
+    update(patch);
   },
 
   async deleteModel(modelHash: string) {
