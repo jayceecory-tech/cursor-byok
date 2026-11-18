@@ -123,9 +123,7 @@ impl CommitSettingsView {
     }
 }
 
-pub async fn get_commit(
-    State(service): State<ControlService>,
-) -> Result<Json<CommitSettingsView>> {
+pub async fn get_commit(State(service): State<ControlService>) -> Result<Json<CommitSettingsView>> {
     let settings = service.commit_settings().await?;
     Ok(Json(CommitSettingsView::new(settings)))
 }

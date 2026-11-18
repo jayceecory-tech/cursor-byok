@@ -504,7 +504,6 @@ mod tests {
         };
         assert_eq!(settings.effective_prompt(), "custom prompt");
     }
-    }
 
     #[test]
     fn default_proxy_mode_uses_the_default_wire_value() {
