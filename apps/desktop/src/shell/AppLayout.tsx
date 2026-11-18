@@ -28,7 +28,12 @@ type MenuItem =
 const keptAlivePages = ["/", "/calls", "/settings", "/harness/cursor", "/plugins"];
 
 const tutorialReadStorageKey = "cursor-byok:tutorial-read";
-const tutorialUrl = "https://docs.leokun.cn";
+// This repository's README is the user guide; the archived upstream docs site is not.
+const tutorialUrlByLocale = {
+  "zh-CN": "https://github.com/jayceecory-tech/cursor-byok/blob/main/README.md",
+  "en-US": "https://github.com/jayceecory-tech/cursor-byok/blob/main/README.en.md",
+  "pt-BR": "https://github.com/jayceecory-tech/cursor-byok/blob/main/README.en.md",
+} as const;
 
 
 export function AppLayout() {
@@ -62,7 +67,7 @@ export function AppLayout() {
 
   const openTutorial = useCallback(() => {
     setConfirmTutorial(false);
-    void api.openExternalUrl(tutorialUrl)
+    void api.openExternalUrl(tutorialUrlByLocale[locale])
       .then(() => {
         setTutorialRead(true);
         try {
