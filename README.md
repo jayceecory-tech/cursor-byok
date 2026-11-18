@@ -11,7 +11,7 @@ cursor-byok 是一个运行在本机的 Cursor 模型网关，帮助你在 Curso
 > [!WARNING]
 > **这是个人 fork，不是上游项目。**
 > 上游 [leookun/cursor-byok](https://github.com/leookun/cursor-byok) 目前不再维护，也不再跟进 Cursor 的协议变化。本仓库由个人维护，只做自用性质的修复，**不提供官方安装包、不提供社区支持**（上游的文档站、QQ 群、Telegram 群均属上游项目，与本仓库无关）。
-> 本仓库**没有发布 Releases**，需要按下方[从源码构建](#从源码构建)自行生成可执行文件。
+> 本仓库自 `1.0.2` 起通过 GitHub Actions 自行构建并发布到本仓库的 [Releases](https://github.com/jayceecory-tech/cursor-byok/releases)，也可以按下方[从源码构建](#从源码构建)自行生成可执行文件。
 
 ## 支持的 Cursor 版本
 
@@ -139,7 +139,7 @@ cursor-byok/
 │   ├── desktop/
 │   │   ├── src/
 │   │   │   ├── features/ # 首页、模型、调用记录与设置
-│   │   │   ├── shell/    # 窗口框架、页面布局与广告外壳
+│   │   │   ├── shell/    # 窗口框架与页面布局
 │   │   │   ├── shared/   # UI、虚拟列表、状态、API 与平台能力
 │   │   │   ├── i18n/     # 本地化运行时与语言目录
 │   │   │   └── styles/   # 全局主题与排版令牌
@@ -171,7 +171,7 @@ cursor-byok/
 
 ## 从源码构建
 
-本仓库不发布安装包，只能自行构建。环境要求：Rust 工具链、Node.js 与 npm、Tauri 2 的系统构建依赖（Windows 上还需要 C++ 构建工具或 MinGW 工具链）。
+也可以完全自行构建。环境要求：Rust 工具链、Node.js 与 npm、Tauri 2 的系统构建依赖（Windows 上还需要 C++ 构建工具或 MinGW 工具链）。
 
 ```bash
 # 1. 前端依赖与产物
@@ -198,16 +198,35 @@ cargo build --release -p cursor-byok-desktop --features tauri/custom-protocol
 
 ## 与上游的差异
 
-本 fork 在 `1.0.1` 基础上只做了修复，没有新增功能：
+本 fork 在 `1.0.1` 的基础上做了两类改动：`1.0.2` 修了三处自身问题，`1.0.3` 合入了 [zkldwxz/cursor-byok](https://github.com/zkldwxz/cursor-byok) 的修复。
+
+`1.0.2`：
 
 - **`fix(bidi)`**：接受 Cursor 3.30+ 的二进制 `BidiAppend` 请求体（`data_binary`），为空时回退到十六进制 `data`。上游版本在 3.30 上会把每个对话请求以 `400` 拒绝，客户端表现为 `Connection stalled`。
 - **`fix(models)`**：新增模型时若与已有配置计算出的标识相同，返回 `model "xxx" already exists`，而不是把 SQLite 的 `UNIQUE constraint failed` 直接抛到界面。
 - **`fix(desktop)`**：控制台首屏并行拉取多个接口时，单个接口失败不再导致整批数据作废（原先会让模型列表清空成“还没有可供 Cursor 使用的模型”）。
 
+`1.0.3` 协议适配：
+
+- **`fix(agent-loop)`**：本地 Statsig bootstrap 始终把 `agent_host_local_loop` 门控置为 `false`。该门控打开后 Cursor 会把 conversation state 换成 ID 引用，本地服务按结构体解码会失败。
+- **`fix(subagent)`**：子代理请求只带一个 parent header、或 `message_id` 为空时不再返回 `400`，改为派生稳定的消息标识。原先子代理会停在 “Planning next moves” 反复重试。
+- **`fix(mcp)`**：规范化 MCP 工具 schema 的根类型与整数约束（长度、条目数等），避免严格的上游 schema 校验拒收。
+
+稳定性：
+
+- **`fix(store)`**：写事务 `COMMIT` 失败时关闭该连接，而不是把它还回连接池。sqlx 会在失败连接上留下事务深度，之后所有写入都会报错，直到进程重启。
+
+界面与数据：
+
+- **`feat(migration)`**：系统设置中新增「迁移」，把模型配置与插件凭据导出成单个 JSON 文件，并在另一台设备导入。
+- **`feat(models)`**：模型备注会显示在 Cursor 的模型说明中。
+- **`refactor(ads)`**：完全移除广告服务与广告位。
+- **`refactor(store)`**：去掉启动时自动清理“过期 lineage”并 `VACUUM` 的行为。那段清理会把超过 24 小时没有新消息的对话，连同它的检查点、消息和 run 一起删除，对单人使用的历史记录过于激进。
+
 已知未处理的问题：
 
-- 应用内置的「检查更新」仍然指向上游 Releases。**自行构建的版本不要用它升级**，否则可能被替换成上游程序。
-- 详细日志开关打开时，`llm_call_requests`、`llm_call_response_chunks`、`cursor_run_traces` 及其 blob 会持续膨胀，本 fork 没有改动这一行为，可自行清理这几张表的行，但不要删除表结构本身（管理界面仍会查询它们）。
+- 合入的修复来自 `1.0.6`（Cursor 3.2x 时期）的分支，本 fork 只在 3.30.14 上验证了 `BidiAppend` 这处；其余各项没有逐项回归。
+- 详细日志开关打开时，`llm_call_requests`、`llm_call_response_chunks`、`cursor_run_traces` 及其 blob 会持续膨胀，本 fork 没有自动清理，可自行清理这几张表的行，但不要删除表结构本身（管理界面仍会查询它们）。
 
 ## 开发
 
