@@ -1,5 +1,3 @@
-import type { CommitPromptLocale, Locale } from "../i18n/runtime";
-
 export type ModelType = "openai" | "anthropic";
 
 export interface Model {
@@ -174,7 +172,6 @@ export interface DesktopSettings {
 export interface CommitSettings {
   model_id: string;
   prompt: string;
-  prompt_locale: CommitPromptLocale;
 }
 
 export interface CommitSettingsView extends CommitSettings {
@@ -564,7 +561,7 @@ export const api = {
   setTabSettings: (settings: TabSettings) => request<TabSettings>("/settings/tab", { method: "PUT", body: JSON.stringify(settings) }),
   desktopSettings: () => request<DesktopSettings>("/settings/desktop"),
   setDesktopSettings: (settings: DesktopSettings) => request<DesktopSettings>("/settings/desktop", { method: "PUT", body: JSON.stringify(settings) }),
-  commitSettings: (locale: Locale) => request<CommitSettingsView>("/settings/commit", { headers: { "accept-language": locale } }),
+  commitSettings: () => request<CommitSettingsView>("/settings/commit"),
   setCommitSettings: (settings: CommitSettings) => request<CommitSettingsView>("/settings/commit", { method: "PUT", body: JSON.stringify(settings) }),
   pricingSettings: () => request<TokenPricingSettings>("/settings/pricing"),
   setPricingSettings: (settings: TokenPricingSettings) => request<TokenPricingSettings>("/settings/pricing", { method: "PUT", body: JSON.stringify(settings) }),

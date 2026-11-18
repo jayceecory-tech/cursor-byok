@@ -42,6 +42,8 @@ const PREVIOUS_COMMIT_LIMIT: usize = 12;
 const EXPLICIT_CONTEXT_LIMIT: usize = 20_000;
 const GENERATION_TIMEOUT: Duration = Duration::from_secs(180);
 const COMMIT_MAX_OUTPUT_TOKENS: u64 = 30_000;
+/// The user-message instruction. Commit content is always Simplified Chinese.
+const USER_INSTRUCTION: &str = "请根据以下改动生成 Git 提交信息，标题与正文用简体中文。";
 
 pub async fn write_git_commit_message(
     State(registry): State<TransportRegistry>,
@@ -228,24 +230,24 @@ async fn generate(
 }
 
 fn build_user_content(request: &ai::WriteGitCommitMessageRequest, diffs: &[String]) -> String {
-    let mut sections = vec!["Generate a Git commit message for the following changes.".to_owned()];
+    let mut sections = vec![USER_INSTRUCTION.to_owned()];
     let previous =
         truncate_previous_commits(&request.previous_commit_messages, PREVIOUS_COMMIT_LIMIT);
     if !previous.is_empty() {
-        sections.push(format!("Recent commit messages:\n{}", previous.join("\n")));
+        sections.push(format!("最近的提交信息：\n{}", previous.join("\n")));
     }
     if let Some(context) = &request.explicit_context {
         let context_json = explicit_context_json(context);
         if !context_json.is_empty() {
-            sections.push(format!("Explicit context:\n{context_json}"));
+            sections.push(format!("补充上下文：\n{context_json}"));
         }
     }
     let diff_sections: Vec<String> = diffs
         .iter()
         .enumerate()
-        .map(|(index, diff)| format!("--- Diff {} ---\n{}", index + 1, diff))
+        .map(|(index, diff)| format!("--- 改动 {} ---\n{}", index + 1, diff))
         .collect();
-    sections.push(format!("Diffs:\n{}", diff_sections.join("\n\n")));
+    sections.push(format!("改动内容：\n{}", diff_sections.join("\n\n")));
     sections.join("\n\n")
 }
 
@@ -325,7 +327,15 @@ fn truncate_text(value: &str, limit: usize) -> String {
 
 fn clean_generated_commit_message(value: &str) -> String {
     let mut result = strip_code_fence(value.trim());
-    const PREFIXES: [&str; 3] = ["commit message:", "git commit message:", "message:"];
+    const PREFIXES: [&str; 7] = [
+        "commit message:",
+        "git commit message:",
+        "message:",
+        "提交信息：",
+        "提交信息:",
+        "提交消息：",
+        "提交消息:",
+    ];
     loop {
         let lower = result.trim().to_ascii_lowercase();
         let Some(prefix) = PREFIXES.iter().find(|prefix| lower.starts_with(*prefix)) else {
@@ -392,6 +402,11 @@ mod tests {
     fn cleaning_strips_fences_and_prefixes() {
         let raw = "```\nCommit message: fix: 修复登录超时问题\n```";
         assert_eq!(clean_generated_commit_message(raw), "fix: 修复登录超时问题");
+        let chinese = "提交信息：feat(desktop): 新增中文提交提示词";
+        assert_eq!(
+            clean_generated_commit_message(chinese),
+            "feat(desktop): 新增中文提交提示词"
+        );
     }
 
     #[test]

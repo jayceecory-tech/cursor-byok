@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { api, pluginText, type CommitSettingsView } from "../../shared/api";
-import { commitPromptLocale } from "../../i18n/runtime";
 import { useI18n } from "../../i18n/store";
 import { useAppStore } from "../../shared/store/appStore";
 import { Button } from "../../shared/ui/Button";
@@ -33,15 +32,7 @@ export function CommitSettingsCard() {
     let active = true;
     void (async () => {
       try {
-        let loaded = await api.commitSettings(locale);
-        const promptLocale = commitPromptLocale(locale);
-        if (!loaded.prompt.trim() && loaded.prompt_locale !== promptLocale) {
-          loaded = await api.setCommitSettings({
-            model_id: loaded.model_id,
-            prompt: "",
-            prompt_locale: promptLocale,
-          });
-        }
+        const loaded = await api.commitSettings();
         if (active) {
           setView(loaded);
           setModelDraft(loaded.model_id);
@@ -53,7 +44,7 @@ export function CommitSettingsCard() {
     return () => {
       active = false;
     };
-  }, [locale, message]);
+  }, [message]);
 
   const modelOptions = useMemo(() => {
     const options: ModelSelectOption[] = [{ value: "", label: t("直连"), group: "Cursor" }];
@@ -99,10 +90,9 @@ export function CommitSettingsCard() {
       return api.setCommitSettings({
         model_id: modelId,
         prompt: normalizedPrompt,
-        prompt_locale: commitPromptLocale(locale),
       });
     },
-    [view, locale],
+    [view],
   );
 
   const editModel = useCallback(() => {

@@ -1,5 +1,5 @@
 //! Persists application settings.
-use serde::{Deserialize, Deserializer, Serialize};
+use serde::{Deserialize, Serialize};
 
 use crate::Result;
 
@@ -14,9 +14,10 @@ const CURSOR_TAKEOVER_ENABLED_KEY: &str = "cursor_takeover_enabled";
 const PRICING_SETTINGS_KEY: &str = "token_pricing";
 const EXTERNAL_API_SETTINGS_KEY: &str = "external_api";
 
-/// Embedded default system prompts for commit message generation.
-pub const DEFAULT_COMMIT_PROMPT_ZH_CN: &str = include_str!("../../prompt/cursor/commit/zh-CN.md");
-pub const DEFAULT_COMMIT_PROMPT_EN_US: &str = include_str!("../../prompt/cursor/commit/en-US.md");
+/// Embedded default system prompt for commit message generation. Commit
+/// subjects, bodies, and release notes are always required to be Simplified
+/// Chinese.
+pub const DEFAULT_COMMIT_PROMPT: &str = include_str!("../../prompt/cursor/commit/prompt.md");
 
 pub const PUBLIC_TAB_SERVICE_URL: &str = "https://tab.leokun.cn";
 
@@ -111,52 +112,19 @@ impl TabSettings {
     }
 }
 
-#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize)]
-pub enum CommitPromptLocale {
-    #[default]
-    #[serde(rename = "zh-CN")]
-    ZhCn,
-    #[serde(rename = "en-US")]
-    EnUs,
-}
-
-impl CommitPromptLocale {
-    pub fn from_interface_language(value: &str) -> Self {
-        if value.eq_ignore_ascii_case("zh-CN") {
-            Self::ZhCn
-        } else {
-            Self::EnUs
-        }
-    }
-
-    pub fn default_prompt(self) -> &'static str {
-        match self {
-            Self::ZhCn => DEFAULT_COMMIT_PROMPT_ZH_CN.trim(),
-            Self::EnUs => DEFAULT_COMMIT_PROMPT_EN_US.trim(),
-        }
-    }
-}
-
-impl<'de> Deserialize<'de> for CommitPromptLocale {
-    fn deserialize<D: Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
-        let value = String::deserialize(deserializer)?;
-        Ok(Self::from_interface_language(&value))
-    }
-}
-
 /// User preferences for Git commit message generation.
 ///
 /// Empty `model_id` means 直连: forward the original Cursor RPC unchanged.
 /// A non-empty value is the stable identifier of a configured built-in or
 /// plugin model, and the request is generated locally through that model.
+///
+/// There is no prompt locale: commit content is always Simplified Chinese.
 #[derive(Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 pub struct CommitSettings {
     #[serde(default)]
     pub model_id: String,
     #[serde(default)]
     pub prompt: String,
-    #[serde(default)]
-    pub prompt_locale: CommitPromptLocale,
 }
 
 impl CommitSettings {
@@ -164,10 +132,16 @@ impl CommitSettings {
         self.model_id.trim().is_empty()
     }
 
+    /// The built-in Simplified Chinese prompt. Always the requirement,
+    /// regardless of the desktop interface language.
+    pub fn default_prompt() -> &'static str {
+        DEFAULT_COMMIT_PROMPT.trim()
+    }
+
     pub fn effective_prompt(&self) -> &str {
         let trimmed = self.prompt.trim();
         if trimmed.is_empty() {
-            self.prompt_locale.default_prompt()
+            Self::default_prompt()
         } else {
             trimmed
         }
@@ -462,7 +436,6 @@ impl Store {
         let settings = CommitSettings {
             model_id: settings.model_id.trim().to_owned(),
             prompt: settings.prompt.trim().to_owned(),
-            prompt_locale: settings.prompt_locale,
         };
         let value_json = serde_json::to_string(&settings)?;
         let _write = self.writes.lock().await;
@@ -509,11 +482,7 @@ impl Store {
 
 #[cfg(test)]
 mod tests {
-    use super::{
-        read_proxy_settings, CommitPromptLocale, CommitSettings, ExternalApiSettings, ProxyMode,
-        ProxySettingsInput, ProxySettingsSecret, Store, TokenPricingSettings,
-        DEFAULT_COMMIT_PROMPT_EN_US, DEFAULT_COMMIT_PROMPT_ZH_CN, PROXY_SETTINGS_KEY,
-    };
+    use super::*;
 
     /// The `outbound_proxy` row exactly as builds before the `system` -> `default`
     /// rename wrote it.
@@ -521,49 +490,20 @@ mod tests {
         r#"{"mode":"system","address":"","auth_enabled":false,"username":"","password":""}"#;
 
     #[test]
-    fn commit_prompt_locale_maps_unknown_interface_languages_to_english() {
-        assert_eq!(
-            serde_json::from_str::<CommitPromptLocale>(r#""zh-CN""#).unwrap(),
-            CommitPromptLocale::ZhCn
-        );
-        assert_eq!(
-            serde_json::from_str::<CommitPromptLocale>(r#""en-US""#).unwrap(),
-            CommitPromptLocale::EnUs
-        );
-        assert_eq!(
-            serde_json::from_str::<CommitPromptLocale>(r#""pt-BR""#).unwrap(),
-            CommitPromptLocale::EnUs
-        );
-        assert_eq!(
-            serde_json::to_string(&CommitPromptLocale::EnUs).unwrap(),
-            r#""en-US""#
-        );
+    fn default_commit_prompt_requires_simplified_chinese() {
+        let settings = CommitSettings::default();
+        assert_eq!(settings.effective_prompt(), DEFAULT_COMMIT_PROMPT.trim());
+        assert!(settings.effective_prompt().contains("简体中文"));
     }
 
     #[test]
-    fn default_commit_prompt_follows_its_saved_locale() {
-        for (prompt_locale, expected) in [
-            (CommitPromptLocale::ZhCn, DEFAULT_COMMIT_PROMPT_ZH_CN),
-            (CommitPromptLocale::EnUs, DEFAULT_COMMIT_PROMPT_EN_US),
-        ] {
-            let settings = CommitSettings {
-                prompt_locale,
-                ..CommitSettings::default()
-            };
-            assert_eq!(settings.effective_prompt(), expected.trim());
-        }
+    fn custom_commit_prompt_overrides_the_default() {
+        let settings = CommitSettings {
+            prompt: "custom prompt".into(),
+            ..CommitSettings::default()
+        };
+        assert_eq!(settings.effective_prompt(), "custom prompt");
     }
-
-    #[test]
-    fn custom_commit_prompt_does_not_change_with_locale() {
-        for prompt_locale in [CommitPromptLocale::ZhCn, CommitPromptLocale::EnUs] {
-            let settings = CommitSettings {
-                prompt: "custom prompt".into(),
-                prompt_locale,
-                ..CommitSettings::default()
-            };
-            assert_eq!(settings.effective_prompt(), "custom prompt");
-        }
     }
 
     #[test]
