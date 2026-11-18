@@ -28,18 +28,15 @@ type MenuItem =
 const keptAlivePages = ["/", "/calls", "/settings", "/harness/cursor", "/plugins"];
 
 const tutorialReadStorageKey = "cursor-byok:tutorial-read";
-// This repository's README is the user guide; the archived upstream docs site is not.
-const tutorialUrlByLocale = {
-  "zh-CN": "https://github.com/jayceecory-tech/cursor-byok/blob/main/README.md",
-  "en-US": "https://github.com/jayceecory-tech/cursor-byok/blob/main/README.en.md",
-  "pt-BR": "https://github.com/jayceecory-tech/cursor-byok/blob/main/README.en.md",
-} as const;
+// The archived upstream docs site does not describe this fork; its README does.
+const tutorialUrl = "https://github.com/jayceecory-tech/cursor-byok";
 
 
 export function AppLayout() {
   const { busy, cursorHarness } = useAppStore();
   const { availableVersion } = useUpdateStore();
-  const { locale } = useI18n();
+  // Subscribes the layout to locale changes so the global t() labels re-render.
+  useI18n();
   const message = useMessage();
   const location = useLocation();
   const [leftActionTarget, setLeftActionTarget] = useState<HTMLDivElement | null>(null);
@@ -67,7 +64,7 @@ export function AppLayout() {
 
   const openTutorial = useCallback(() => {
     setConfirmTutorial(false);
-    void api.openExternalUrl(tutorialUrlByLocale[locale])
+    void api.openExternalUrl(tutorialUrl)
       .then(() => {
         setTutorialRead(true);
         try {
